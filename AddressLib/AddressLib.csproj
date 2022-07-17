@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net6.0;netstandard2.0;netstandard2.1;net472</TargetFrameworks>
+    <RootNamespace>RaGae</RootNamespace>
+    <AssemblyName>RaGae.ModelLib.$(MSBuildProjectName)</AssemblyName>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
+    <Title>$(MSBuildProjectName)</Title>
+    <Authors>G.Raf</Authors>
+    <Company>G.Raf^engineering</Company>
+    <Copyright>(c) 2021 G.Raf</Copyright>
+    <PackageProjectUrl>https://github.com/sunriax/model</PackageProjectUrl>
+    <PackageTags>address, city, country, model, ragae, sunriax, 0x007E</PackageTags>
+    <Version>1.0.2</Version>
+    <Description>Standard model class for address, city and country containing street, number, zip, city name, country code, country name and a cloneable function</Description>
+    <PackageId>RaGae.Model.Address</PackageId>
+    <RepositoryUrl>https://github.com/sunriax/model.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageIcon>GRAF.png</PackageIcon>
+    <PackageIconUrl />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\GRAF.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>

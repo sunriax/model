@@ -1,0 +1,58 @@
+# Travis CI build pipeline
+# --------------------------------------------
+
+os: linux
+dist: xenial
+language: csharp
+solution: ModelLib.sln
+mono: none
+dotnet: 6.0.302
+
+addons:
+  apt:
+    packages:
+      - zip
+      - tar
+      - gzip
+
+before_script:
+  - set -e
+  - dotnet restore
+
+script:
+  - |
+    if [[ -z "$TRAVIS_TAG" ]]; then
+      set -e
+      dotnet build -c Release
+      dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude="[xunit*]*" /p:excludebyfile="**/*.Designer.cs"
+      bash <(curl -s https://codecov.io/bash) -Z
+    fi
+
+before_deploy:
+  - set -e
+  - dotnet build ModelLib.sln -c Release
+  - dotnet pack ModelLib.sln -c Release -o nuget
+  - |
+    mkdir output
+    mv ./PersonLib/bin/Release ./output/PersonLib
+    mv ./AddressLib/bin/Release ./output/AddressLib
+  - |
+    zip -r ./Model.zip ./output/* 
+    tar cfvz ./Model.tar.gz ./output
+
+deploy:
+  provider: releases
+  overwrite: true
+  api_key: $GITHUB_TOKEN
+  file:
+    - "./Model.zip"
+    - "./Model.tar.gz"
+  skip_cleanup: true
+  on:
+    tags: true
+
+after_deploy:
+  - dotnet nuget push --skip-duplicate ./nuget/'*.nupkg' -k $NUGET_TOKEN -s https://api.nuget.org/v3/index.json
+  - dotnet nuget push --skip-duplicate ./nuget/'*.nupkg' -k $PACKAGE_TOKEN -s https://nuget.pkg.github.com/sunriax/index.json
+
+
